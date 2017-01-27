@@ -135,10 +135,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="DevIL.dll" />
+    <None Include="fshader.glsl" />
     <None Include="ILU.dll" />
+    <None Include="vshader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="cube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
   </ItemGroup>

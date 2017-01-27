@@ -44,6 +44,12 @@
     <None Include="ILU.dll">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="vshader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="fshader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -53,6 +59,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
