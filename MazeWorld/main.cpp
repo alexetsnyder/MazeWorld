@@ -18,12 +18,13 @@
 #include "camera.h"
 #include "cube.h"
 #include "quad.h"
+#include "wall.h"
 
 #define START_WIDTH  800
 #define START_HEIGHT 600
 
 //Global Variables
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 10.0f));
 GLfloat deltaTime = 0.0f, lastFrame = 0.0f;
 int screenWidth = START_WIDTH, screenHeight = START_HEIGHT;
 GLfloat lastX = START_WIDTH / 2, lastY = START_HEIGHT / 2;
@@ -89,7 +90,8 @@ int main()
 	Shader shader("vshader.glsl", "fshader.glsl");
 
 	//Cube* cube = Cube::get_instance();
-	Quad* quad = Quad::get_instance();
+	//Quad* quad = Quad::get_instance();
+	Wall wall(glm::vec3(0.0f, 0.0f, 0.0f), dir::EAST);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -113,15 +115,15 @@ int main()
 		glm::mat4 view;
 		glm::mat4 projection;
 
-		model = glm::mat4();
+		//model = glm::mat4();
 		view = camera.getViewMatrix();
 		projection = glm::perspective(glm::radians(camera.zoom()), (GLfloat)screenWidth / (GLfloat)screenHeight, 0.1f, 100.0f);
 
-		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "model"), 1, GL_FALSE, glm::value_ptr(model));
+		//glUniformMatrix4fv(glGetUniformLocation(shader.program(), "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		quad->draw();
+		wall.draw(shader);
 
 		//Swap Buffers
 		glfwSwapBuffers(window);
