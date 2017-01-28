@@ -17,6 +17,7 @@
 #include "shader.h"
 #include "camera.h"
 #include "cube.h"
+#include "quad.h"
 
 #define START_WIDTH  800
 #define START_HEIGHT 600
@@ -87,7 +88,8 @@ int main()
 	//Compile Shaders
 	Shader shader("vshader.glsl", "fshader.glsl");
 
-	Cube* cube = Cube::get_instance();
+	//Cube* cube = Cube::get_instance();
+	Quad* quad = Quad::get_instance();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -119,7 +121,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		cube->draw();
+		quad->draw();
 
 		//Swap Buffers
 		glfwSwapBuffers(window);

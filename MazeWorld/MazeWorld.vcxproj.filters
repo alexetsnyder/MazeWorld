@@ -36,6 +36,9 @@
     <ClInclude Include="spot_light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DevIL.dll">
@@ -62,6 +65,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

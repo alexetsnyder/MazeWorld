@@ -130,6 +130,7 @@
     <ClInclude Include="directional_light.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="point_light.h" />
+    <ClInclude Include="quad.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="spot_light.h" />
   </ItemGroup>
@@ -143,6 +144,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cube.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="quad.cpp" />
     <ClCompile Include="shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
