@@ -18,7 +18,8 @@
 #include "camera.h"
 #include "cube.h"
 #include "quad.h"
-#include "wall.h"
+//#include "wall.h"
+#include "cell.h"
 
 #define START_WIDTH  800
 #define START_HEIGHT 600
@@ -91,7 +92,8 @@ int main()
 
 	//Cube* cube = Cube::get_instance();
 	//Quad* quad = Quad::get_instance();
-	Wall wall(glm::vec3(0.0f, 0.0f, 0.0f), dir::EAST);
+	//Wall wall(glm::vec3(0.0f, 0.0f, 0.0f), dir::EAST);
+	Cell cell(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -123,7 +125,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		wall.draw(shader);
+		cell.draw(shader);
 
 		//Swap Buffers
 		glfwSwapBuffers(window);
