@@ -127,14 +127,9 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="cell.h" />
-    <ClInclude Include="cube.h" />
-    <ClInclude Include="directional_light.h" />
+    <ClInclude Include="geometry.h" />
     <ClInclude Include="light.h" />
-    <ClInclude Include="point_light.h" />
-    <ClInclude Include="quad.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="spot_light.h" />
-    <ClInclude Include="wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DevIL.dll" />
@@ -145,11 +140,9 @@
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="cell.cpp" />
-    <ClCompile Include="cube.cpp" />
+    <ClCompile Include="geometry.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="quad.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

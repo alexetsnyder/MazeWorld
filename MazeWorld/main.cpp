@@ -16,9 +16,6 @@
 //My Libraries
 #include "shader.h"
 #include "camera.h"
-#include "cube.h"
-#include "quad.h"
-//#include "wall.h"
 #include "cell.h"
 
 #define START_WIDTH  800
@@ -107,7 +104,7 @@ int main()
 		movement();
 
 		//Clear the Color Buffer
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Render Scene

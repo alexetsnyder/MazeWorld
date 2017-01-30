@@ -35,4 +35,22 @@ class Cube
 		GLuint VEO;
 };
 
+class Quad
+{
+public:
+	static Quad* quad;
+	static bool instance;
+	static Quad* get_instance();
+
+	Quad();
+	~Quad();
+
+	void draw();
+
+private:
+	GLuint VAO;
+	GLuint VBO;
+	GLuint EBO;
+};
+
 #endif
