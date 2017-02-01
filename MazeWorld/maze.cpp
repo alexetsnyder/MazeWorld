@@ -139,7 +139,7 @@ Maze::Maze(int row_count, int cols_count)
 	int mid_row = row_count / 2;
 	int mid_cols = cols_count / 2;
 
-	for (int i = mid_row * -10; i < mid_row * 10; i+=10)
+	for (int i = mid_row * 10; i > mid_row * -10; i-=10)
 	{
 		std::vector<Cell> column;
 		for (int j = mid_cols * -10; j < mid_cols * 10; j+=10)
@@ -184,16 +184,16 @@ void Maze::binary_tree_algorithm()
 	{
 		for (int j = 0; j < grid[i].size(); ++j)
 		{
-			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
 			bool north_wall = (i + 1 < grid.size()) ? false : true;
+			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
 
 			if (!east_wall && !north_wall)
 			{
 				int coin = rand() % 2;
 				if (coin == 0)
 				{
-					grid[i][j].toggle_wall(dir::SOUTH);
-					grid[i + 1][j].toggle_wall(dir::NORTH);
+					grid[i][j].toggle_wall(dir::NORTH);
+					grid[i + 1][j].toggle_wall(dir::SOUTH);
 				}
 				else
 				{
@@ -208,8 +208,8 @@ void Maze::binary_tree_algorithm()
 			}
 			else if (!north_wall)
 			{
-				grid[i][j].toggle_wall(dir::SOUTH);
-				grid[i + 1][j].toggle_wall(dir::NORTH);
+				grid[i][j].toggle_wall(dir::NORTH);
+				grid[i + 1][j].toggle_wall(dir::SOUTH);
 			}
 		}
 	}

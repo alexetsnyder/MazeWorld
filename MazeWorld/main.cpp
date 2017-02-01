@@ -88,7 +88,7 @@ int main()
 	//Compile Shaders
 	Shader shader("vshader.glsl", "fshader.glsl");
 	
-	maze = new Maze(20, 20);
+	maze = new Maze(6, 6);
 	maze->binary_tree_algorithm();
 
 	while (!glfwWindowShouldClose(window))
