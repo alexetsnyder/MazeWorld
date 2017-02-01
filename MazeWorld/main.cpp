@@ -16,13 +16,14 @@
 //My Libraries
 #include "shader.h"
 #include "camera.h"
-#include "cell.h"
+#include "maze.h"
 
 #define START_WIDTH  800
 #define START_HEIGHT 600
 
 //Global Variables
-Camera camera(glm::vec3(0.0f, 0.0f, 10.0f));
+Camera camera(glm::vec3(0.0f, 15.0f, 3.0f));
+Maze* maze;
 GLfloat deltaTime = 0.0f, lastFrame = 0.0f;
 int screenWidth = START_WIDTH, screenHeight = START_HEIGHT;
 GLfloat lastX = START_WIDTH / 2, lastY = START_HEIGHT / 2;
@@ -86,11 +87,9 @@ int main()
 
 	//Compile Shaders
 	Shader shader("vshader.glsl", "fshader.glsl");
-
-	//Cube* cube = Cube::get_instance();
-	//Quad* quad = Quad::get_instance();
-	//Wall wall(glm::vec3(0.0f, 0.0f, 0.0f), dir::EAST);
-	Cell cell(glm::vec3(0.0f, 0.0f, 0.0f));
+	
+	maze = new Maze(20, 20);
+	maze->binary_tree_algorithm();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -116,13 +115,13 @@ int main()
 
 		//model = glm::mat4();
 		view = camera.getViewMatrix();
-		projection = glm::perspective(glm::radians(camera.zoom()), (GLfloat)screenWidth / (GLfloat)screenHeight, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.zoom()), (GLfloat)screenWidth / (GLfloat)screenHeight, 0.1f, 300.0f);
 
 		//glUniformMatrix4fv(glGetUniformLocation(shader.program(), "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(shader.program(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-		cell.draw(shader);
+		maze->draw(shader);
 
 		//Swap Buffers
 		glfwSwapBuffers(window);
@@ -149,6 +148,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			noCursor = true;
 		}
+	}
+
+	if (key == GLFW_KEY_I && action == GLFW_PRESS)
+	{
+		maze->initialize();
+	}
+	if (key == GLFW_KEY_B && action == GLFW_PRESS)
+	{
+		maze->initialize();
+		maze->binary_tree_algorithm();
 	}
 
 	if (key >= 0 && key < 1024)

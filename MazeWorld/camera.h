@@ -16,7 +16,7 @@ const glm::vec3 DIRECTION = glm::vec3(0.0f, 0.0f, -1.0f);
 const glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
 const GLfloat YAW = -90.0f;
 const GLfloat PITCH = 0.0f;
-const GLfloat SPEED = 3.0f;
+const GLfloat SPEED = 10.0f;
 const GLfloat SENSITIVITY = 0.25f;
 const GLfloat ZOOM = 45.0f;
 

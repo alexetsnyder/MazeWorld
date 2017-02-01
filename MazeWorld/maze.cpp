@@ -1,4 +1,6 @@
-#include "cell.h"
+#include <time.h>
+#include <cstdlib>
+#include "maze.h"
 
 //-------------------------------------------------------------------------
 //-WALL CLASS
@@ -71,10 +73,22 @@ Cell::Cell(glm::vec3 position)
 	walls[2] = Wall(glm::vec3(position.x, position.y, position.z + 4.5f), dir::SOUTH);
 	walls[3] = Wall(glm::vec3(position.x - 4.5f, position.y, position.z), dir::WEST);
 
+	std::cout << dir::NORTH << dir::EAST << dir::SOUTH << dir::WEST << std::endl;
+
 	poles[0] = Pole(glm::vec3(position.x + 4.5f, position.y, position.z - 4.5f));
 	poles[1] = Pole(glm::vec3(position.x - 4.5f, position.y, position.z - 4.5f));
 	poles[2] = Pole(glm::vec3(position.x + 4.5f, position.y, position.z + 4.5f));
 	poles[3] = Pole(glm::vec3(position.x - 4.5f, position.y, position.z + 4.5f));
+}
+
+bool Cell::toggle_wall(dir wall)
+{
+	return walls[wall].toggle_wall();
+}
+
+bool Cell::is_wall_displayed(dir wall)
+{
+	return walls[wall].is_displayed();
 }
 
 void Cell::draw(Shader shader)
@@ -114,3 +128,94 @@ void Cell::draw(Shader shader)
 	}
 }
 
+
+//-------------------------------------------------------------------------
+//-MAZE CLASS
+//-------------------------------------------------------------------------
+Maze::Maze(int row_count, int cols_count)
+{
+	srand((unsigned int)time(NULL));
+
+	int mid_row = row_count / 2;
+	int mid_cols = cols_count / 2;
+
+	for (int i = mid_row * -10; i < mid_row * 10; i+=10)
+	{
+		std::vector<Cell> column;
+		for (int j = mid_cols * -10; j < mid_cols * 10; j+=10)
+		{
+			column.push_back(Cell(glm::vec3((GLfloat)j, 0.0f, (GLfloat)i)));
+		}
+		grid.push_back(column);
+	}
+}
+
+void Maze::draw(Shader shader)
+{
+	for (int i = 0; i < grid.size(); ++i)
+	{
+		for (int j = 0; j < grid[i].size(); ++j)
+		{
+			grid[i][j].draw(shader);
+		}
+	}
+}
+
+void Maze::initialize()
+{
+	for (int i = 0; i < grid.size(); ++i)
+	{
+		for (int j = 0; j < grid[i].size(); ++j)
+		{
+			for (int k = dir::NORTH; k <= dir::WEST; ++k)
+			{
+				if (!grid[i][j].is_wall_displayed((dir)k))
+				{
+					grid[i][j].toggle_wall((dir)k);
+				}
+			}
+		}
+	}
+}
+
+void Maze::binary_tree_algorithm()
+{
+	for (int i = 0; i < grid.size(); ++i)
+	{
+		for (int j = 0; j < grid[i].size(); ++j)
+		{
+			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
+			bool north_wall = (i + 1 < grid.size()) ? false : true;
+
+			if (!east_wall && !north_wall)
+			{
+				int coin = rand() % 2;
+				if (coin == 0)
+				{
+					grid[i][j].toggle_wall(dir::SOUTH);
+					grid[i + 1][j].toggle_wall(dir::NORTH);
+				}
+				else
+				{
+					grid[i][j].toggle_wall(dir::EAST);
+					grid[i][j + 1].toggle_wall(dir::WEST);
+				}
+			}
+			else if (!east_wall)
+			{
+				grid[i][j].toggle_wall(dir::EAST);
+				grid[i][j + 1].toggle_wall(dir::WEST);
+			}
+			else if (!north_wall)
+			{
+				grid[i][j].toggle_wall(dir::SOUTH);
+				grid[i + 1][j].toggle_wall(dir::NORTH);
+			}
+		}
+	}
+}
+
+void Maze::sidewinder_algorithm()
+{
+
+}
