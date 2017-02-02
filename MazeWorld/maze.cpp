@@ -73,8 +73,6 @@ Cell::Cell(glm::vec3 position)
 	walls[2] = Wall(glm::vec3(position.x, position.y, position.z + 4.5f), dir::SOUTH);
 	walls[3] = Wall(glm::vec3(position.x - 4.5f, position.y, position.z), dir::WEST);
 
-	std::cout << dir::NORTH << dir::EAST << dir::SOUTH << dir::WEST << std::endl;
-
 	poles[0] = Pole(glm::vec3(position.x + 4.5f, position.y, position.z - 4.5f));
 	poles[1] = Pole(glm::vec3(position.x - 4.5f, position.y, position.z - 4.5f));
 	poles[2] = Pole(glm::vec3(position.x + 4.5f, position.y, position.z + 4.5f));
@@ -152,9 +150,9 @@ Maze::Maze(int row_count, int cols_count)
 
 void Maze::draw(Shader shader)
 {
-	for (int i = 0; i < grid.size(); ++i)
+	for (unsigned int i = 0; i < grid.size(); ++i)
 	{
-		for (int j = 0; j < grid[i].size(); ++j)
+		for (unsigned int j = 0; j < grid[i].size(); ++j)
 		{
 			grid[i][j].draw(shader);
 		}
@@ -163,11 +161,11 @@ void Maze::draw(Shader shader)
 
 void Maze::initialize()
 {
-	for (int i = 0; i < grid.size(); ++i)
+	for (unsigned int i = 0; i < grid.size(); ++i)
 	{
-		for (int j = 0; j < grid[i].size(); ++j)
+		for (unsigned int j = 0; j < grid[i].size(); ++j)
 		{
-			for (int k = dir::NORTH; k <= dir::WEST; ++k)
+			for (unsigned int k = dir::NORTH; k <= dir::WEST; ++k)
 			{
 				if (!grid[i][j].is_wall_displayed((dir)k))
 				{
@@ -180,9 +178,9 @@ void Maze::initialize()
 
 void Maze::binary_tree_algorithm()
 {
-	for (int i = 0; i < grid.size(); ++i)
+	for (unsigned int i = 0; i < grid.size(); ++i)
 	{
-		for (int j = 0; j < grid[i].size(); ++j)
+		for (unsigned int j = 0; j < grid[i].size(); ++j)
 		{
 			bool north_wall = (i + 1 < grid.size()) ? false : true;
 			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
@@ -217,5 +215,53 @@ void Maze::binary_tree_algorithm()
 
 void Maze::sidewinder_algorithm()
 {
+	using namespace std;
+
+	vector<Point> run;
+	for (unsigned int i = 0; i < grid.size(); ++i)
+	{
+		run.clear();
+
+		for (unsigned int j = 0; j < grid[i].size(); ++j)
+		{
+			bool north_wall = (i + 1 < grid.size()) ? false : true;
+			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
+
+			run.push_back(Point(i, j));
+
+			if (!east_wall && !north_wall)
+			{
+				int coin = rand() % 2;
+				if (coin == 0)
+				{
+					grid[i][j].toggle_wall(dir::EAST);
+					grid[i][j + 1].toggle_wall(dir::WEST);
+				}
+				else
+				{
+					int choice = rand() % run.size();
+					Point cell = run[choice];
+					run.clear();
+
+					grid[cell.x()][cell.y()].toggle_wall(dir::NORTH);
+					grid[cell.x() + 1][cell.y()].toggle_wall(dir::SOUTH);
+				}
+			}
+			else if (!east_wall)
+			{
+				grid[i][j].toggle_wall(dir::EAST);
+				grid[i][j + 1].toggle_wall(dir::WEST);
+			}
+			else if (!north_wall)
+			{
+				int choice = rand() % run.size();
+				Point cell = run[choice];
+				run.clear();
+
+				grid[cell.x()][cell.y()].toggle_wall(dir::NORTH);
+				grid[cell.x() + 1][cell.y()].toggle_wall(dir::SOUTH);
+			}
+		}
+	}
 
 }
