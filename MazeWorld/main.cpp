@@ -88,7 +88,7 @@ int main()
 	//Compile Shaders
 	Shader shader("vshader.glsl", "fshader.glsl");
 	
-	maze = new Maze(20, 20);
+	maze = new Maze(9, 9);
 	//maze->binary_tree_algorithm();
 	maze->sidewinder_algorithm();
 
@@ -128,6 +128,7 @@ int main()
 		glfwSwapBuffers(window);
 	}
 
+	delete maze;
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }

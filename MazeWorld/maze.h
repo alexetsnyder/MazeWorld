@@ -8,6 +8,7 @@
 
 #include "shader.h"
 #include "geometry.h"
+#include "graph.h"
 
 enum dir { NORTH, EAST, SOUTH, WEST };
 
@@ -70,6 +71,18 @@ class Cell
 		Pole poles[4];
 };
 
+class Point
+{
+	public:
+		Point(int x, int y) { _x = x; _y = y; }
+
+		int& x() { return _x; }
+		int& y() { return _y; }
+
+	private:
+		int _x, _y;
+};
+
 class Maze
 {
 	public:
@@ -83,17 +96,8 @@ class Maze
 
 	private:
 		std::vector<std::vector<Cell> > grid;
-
+		Graph graph;
+		int cols_count, row_count;
 };
 
-class Point
-{
-	public:
-		Point(int x, int y) { _x = x; _y = y; }
 
-		int& x() { return _x; }
-		int& y() { return _y; }
-
-	private:
-		int _x, _y;
-};

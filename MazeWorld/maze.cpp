@@ -134,15 +134,33 @@ Maze::Maze(int row_count, int cols_count)
 {
 	srand((unsigned int)time(NULL));
 
-	int mid_row = row_count / 2;
-	int mid_cols = cols_count / 2;
+	this->row_count = row_count;
+	this->cols_count = cols_count;
 
-	for (int i = mid_row * 10; i > mid_row * -10; i-=10)
+	/*int mid_row = (row_count % 2 == 0) ? row_count / 2 : row_count / 2 + 1;
+	int mid_cols = (cols_count % 2 == 0) ? cols_count / 2 : cols_count / 2 + 1;
+
+	for (int i = mid_row * 10; i > mid_row * -10; i -= 10)
 	{
 		std::vector<Cell> column;
-		for (int j = mid_cols * -10; j < mid_cols * 10; j+=10)
+		for (int j = mid_cols * -10; j < mid_cols * 10; j += 10)
 		{
 			column.push_back(Cell(glm::vec3((GLfloat)j, 0.0f, (GLfloat)i)));
+		}
+		grid.push_back(column);
+	}*/
+
+	GLfloat mid_row = row_count / 2.0f;
+	GLfloat mid_col = cols_count / 2.0f;
+
+	GLfloat z_index = mid_row *  10.0f;
+	GLfloat x_index = mid_col * -10.0f;
+	for (GLfloat zi = mid_row * 10.0f; zi > mid_row * -10.0f; zi -= 10)
+	{
+		std::vector<Cell> column;
+		for (GLfloat xi = mid_col * -10.0f; xi < mid_col * 10.0f; xi += 10)
+		{
+			column.push_back(Cell(glm::vec3(xi, 0.0f, zi)));
 		}
 		grid.push_back(column);
 	}
