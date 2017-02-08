@@ -23,6 +23,14 @@ void Graph::add_edge(int node1, int node2)
 	_graph[node2].push_back(node1);
 }
 
+void Graph::clear()
+{
+	for (int i = 0; i < _graph.size(); ++i)
+	{
+		_graph[i].clear();
+	}
+}
+
 std::vector<int> Graph::nodes()
 {
 	std::vector<int> nodes;

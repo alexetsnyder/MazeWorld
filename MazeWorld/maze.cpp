@@ -137,18 +137,7 @@ Maze::Maze(int row_count, int cols_count)
 	this->row_count = row_count;
 	this->cols_count = cols_count;
 
-	/*int mid_row = (row_count % 2 == 0) ? row_count / 2 : row_count / 2 + 1;
-	int mid_cols = (cols_count % 2 == 0) ? cols_count / 2 : cols_count / 2 + 1;
-
-	for (int i = mid_row * 10; i > mid_row * -10; i -= 10)
-	{
-		std::vector<Cell> column;
-		for (int j = mid_cols * -10; j < mid_cols * 10; j += 10)
-		{
-			column.push_back(Cell(glm::vec3((GLfloat)j, 0.0f, (GLfloat)i)));
-		}
-		grid.push_back(column);
-	}*/
+	graph = Graph(row_count * cols_count);
 
 	GLfloat mid_row = row_count / 2.0f;
 	GLfloat mid_col = cols_count / 2.0f;
@@ -194,39 +183,65 @@ void Maze::initialize()
 	}
 }
 
+void Maze::merge_gg()
+{
+	initialize();
+
+	int row = 0, cols = 0;
+
+	for (unsigned int i = 0; i < graph.size(); ++i)
+	{
+		for (std::vector<int>::iterator p = graph.edges_begin(i); p != graph.edges_end(i); ++p)
+		{
+			int diff = *p - i;
+
+			if (diff == -cols_count)
+				grid[row][cols].toggle_wall(dir::SOUTH);
+			else if (diff == -1)
+				grid[row][cols].toggle_wall(dir::WEST);
+			else if (diff == 1)
+				grid[row][cols].toggle_wall(dir::EAST);
+			else if (diff == cols_count)
+				grid[row][cols].toggle_wall(dir::NORTH);
+			else
+				std::cout << "Diff: " << diff << " *p: " << *p << " i: " << i << std::endl;
+		}
+
+		if (cols < cols_count-1)
+		{
+			++cols;
+		}
+		else
+		{
+			++row;
+			cols = 0;
+		}
+	}
+}
+
 void Maze::binary_tree_algorithm()
 {
-	for (unsigned int i = 0; i < grid.size(); ++i)
+	graph.clear();
+
+	int node_count = 0;
+	for (int i = 0; i < row_count; ++i)
 	{
-		for (unsigned int j = 0; j < grid[i].size(); ++j)
+		for (int j = 0; j < cols_count; ++j)
 		{
 			bool north_wall = (i + 1 < grid.size()) ? false : true;
 			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
 
-			if (!east_wall && !north_wall)
+			if (north_wall && east_wall)
 			{
-				int coin = rand() % 2;
-				if (coin == 0)
-				{
-					grid[i][j].toggle_wall(dir::NORTH);
-					grid[i + 1][j].toggle_wall(dir::SOUTH);
-				}
-				else
-				{
-					grid[i][j].toggle_wall(dir::EAST);
-					grid[i][j + 1].toggle_wall(dir::WEST);
-				}
+				continue;
 			}
-			else if (!east_wall)
+			else
 			{
-				grid[i][j].toggle_wall(dir::EAST);
-				grid[i][j + 1].toggle_wall(dir::WEST);
+				graph.add_edge(node_count, (east_wall || (rand() % 2 == 0 && !north_wall)) ?
+							                node_count + cols_count : node_count + 1);
 			}
-			else if (!north_wall)
-			{
-				grid[i][j].toggle_wall(dir::NORTH);
-				grid[i + 1][j].toggle_wall(dir::SOUTH);
-			}
+
+			++node_count;
 		}
 	}
 }

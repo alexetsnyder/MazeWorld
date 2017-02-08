@@ -91,6 +91,7 @@ class Maze
 		void draw(Shader shader);
 
 		void initialize();
+		void merge_gg();
 		void binary_tree_algorithm();
 		void sidewinder_algorithm();
 
