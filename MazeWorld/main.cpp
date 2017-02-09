@@ -88,7 +88,7 @@ int main()
 	//Compile Shaders
 	Shader shader("vshader.glsl", "fshader.glsl");
 	
-	maze = new Maze(6, 6);
+	maze = new Maze(10, 10);
 	//maze->binary_tree_algorithm();
 	//maze->sidewinder_algorithm();
 
@@ -166,7 +166,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_V && action == GLFW_PRESS)
 	{
 		//maze->initialize();
-		//maze->sidewinder_algorithm();
+		maze->sidewinder_algorithm();
+		maze->merge_gg();
 	}
 
 	if (key >= 0 && key < 1024)

@@ -207,15 +207,8 @@ void Maze::merge_gg()
 				std::cout << "Diff: " << diff << " *p: " << *p << " i: " << i << std::endl;
 		}
 
-		if (cols < cols_count-1)
-		{
-			++cols;
-		}
-		else
-		{
-			++row;
-			cols = 0;
-		}
+		cols = (cols < cols_count - 1) ? cols + 1 : 0;
+		row += (cols == 0) ? 1 : 0;
 	}
 }
 
@@ -250,51 +243,39 @@ void Maze::sidewinder_algorithm()
 {
 	using namespace std;
 
-	vector<Point> run;
-	for (unsigned int i = 0; i < grid.size(); ++i)
+	graph.clear();
+
+	vector<int> run;
+
+	int node_count = 0;
+	for (int i = 0; i < row_count; ++i)
 	{
 		run.clear();
 
-		for (unsigned int j = 0; j < grid[i].size(); ++j)
+		for (int j = 0; j < cols_count; ++j)
 		{
 			bool north_wall = (i + 1 < grid.size()) ? false : true;
 			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
 
-			run.push_back(Point(i, j));
+			run.push_back(node_count);
 
-			if (!east_wall && !north_wall)
+			if (north_wall && east_wall)
 			{
-				int coin = rand() % 2;
-				if (coin == 0)
-				{
-					grid[i][j].toggle_wall(dir::EAST);
-					grid[i][j + 1].toggle_wall(dir::WEST);
-				}
-				else
-				{
-					int choice = rand() % run.size();
-					Point cell = run[choice];
-					run.clear();
-
-					grid[cell.x()][cell.y()].toggle_wall(dir::NORTH);
-					grid[cell.x() + 1][cell.y()].toggle_wall(dir::SOUTH);
-				}
+				continue;
 			}
-			else if (!east_wall)
+			else if (north_wall || (rand() % 2 == 0 && !east_wall))
 			{
-				grid[i][j].toggle_wall(dir::EAST);
-				grid[i][j + 1].toggle_wall(dir::WEST);
+				graph.add_edge(node_count, node_count + 1);
 			}
-			else if (!north_wall)
+			else
 			{
-				int choice = rand() % run.size();
-				Point cell = run[choice];
+				int node = run[rand() % run.size()];
+				graph.add_edge(node, node + cols_count);
 				run.clear();
-
-				grid[cell.x()][cell.y()].toggle_wall(dir::NORTH);
-				grid[cell.x() + 1][cell.y()].toggle_wall(dir::SOUTH);
 			}
+
+			++node_count;
 		}
 	}
-
 }
+
