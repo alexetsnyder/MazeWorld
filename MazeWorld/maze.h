@@ -92,13 +92,19 @@ class Maze
 
 		void initialize();
 		void merge_gg();
+		void possible_dirs(int row, int col, std::vector<dir>& dirs);
+		int dir_to_node(int prv_node, dir prv_dir);
+		void node_to_grid(int node_num, int& row, int& col);
+		int grid_to_node(int row, int col) 
+			{ return row * cols_count + row + col; }
+
 		void binary_tree_algorithm();
 		void sidewinder_algorithm();
+		void aldous_broder_algorithm();
+		void wilsons_algorithm();
 
 	private:
 		std::vector<std::vector<Cell> > grid;
-		Graph graph;
 		int cols_count, row_count;
+		Graph graph;	
 };
-
-

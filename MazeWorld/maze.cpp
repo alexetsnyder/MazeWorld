@@ -212,6 +212,59 @@ void Maze::merge_gg()
 	}
 }
 
+int Maze::dir_to_node(int prv_node, dir prv_dir)
+{
+	int next_node = -1;
+
+	switch (prv_dir)
+	{
+	case dir::NORTH:
+		next_node = prv_node + cols_count;
+		break;
+	case dir::EAST:
+		next_node = prv_node + 1;
+		break;
+	case dir::SOUTH:
+		next_node = prv_node - cols_count;
+		break;
+	case dir::WEST:
+		next_node = prv_node - 1;
+		break;
+	default:
+		std::cout << "ERROR:DIR_TO_NODE:DEFAULT_SWITCH_REACHED\n";
+	}
+
+	return next_node;
+}
+
+void Maze::possible_dirs(int row, int col, std::vector<dir>& dirs)
+{
+	if (!(row == 0))
+		dirs.push_back(dir::SOUTH);
+	if (!(col == cols_count - 1))
+		dirs.push_back(dir::EAST);
+	if (!(row == row_count - 1))
+		dirs.push_back(dir::NORTH);
+	if (!(col == 0))
+		dirs.push_back(dir::WEST);
+}
+
+void Maze::node_to_grid(int node_num, int& row, int& col)
+{
+	for (int i = 0; i < row_count; ++i)
+	{
+		int lower_bound = i * cols_count;
+		int upper_bound = lower_bound + cols_count - 1;
+
+		if (node_num >= lower_bound && node_num <= upper_bound)
+		{
+			row = i;
+		}
+	}
+
+	col = node_num - row * cols_count;
+}
+
 void Maze::binary_tree_algorithm()
 {
 	graph.clear();
@@ -221,8 +274,8 @@ void Maze::binary_tree_algorithm()
 	{
 		for (int j = 0; j < cols_count; ++j)
 		{
-			bool north_wall = (i + 1 < grid.size()) ? false : true;
-			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
+			bool north_wall = (i + 1 < row_count) ? false : true;
+			bool east_wall = (j + 1 < cols_count) ? false : true;
 
 			if (north_wall && east_wall)
 			{
@@ -254,8 +307,8 @@ void Maze::sidewinder_algorithm()
 
 		for (int j = 0; j < cols_count; ++j)
 		{
-			bool north_wall = (i + 1 < grid.size()) ? false : true;
-			bool east_wall = (j + 1 < grid[i].size()) ? false : true;
+			bool north_wall = (i + 1 < row_count) ? false : true;
+			bool east_wall = (j + 1 < cols_count) ? false : true;
 
 			run.push_back(node_count);
 
@@ -278,4 +331,53 @@ void Maze::sidewinder_algorithm()
 		}
 	}
 }
+
+void Maze::aldous_broder_algorithm()
+{
+	graph.clear();
+
+	int current = rand() % (row_count * cols_count);
+	int count = row_count * cols_count;
+
+	std::vector<bool> visited;
+	visited.resize(row_count * cols_count, false);
+
+	int row = 0, col = 0;
+	while (count != 1)
+	{
+		visited[current] = true;
+
+		//Return all possible directions
+		std::vector<dir> dirs;
+
+		node_to_grid(current, row, col);
+		possible_dirs(row, col, dirs);
+
+		if (dirs.empty())
+		{
+			std::cout << "ERROR:ALDOUS_BROUDER_ALGORITHM:DIRS SHOULD NEVER BE EMPTY.\n";
+			exit(EXIT_FAILURE);
+		}
+
+		int next_node = dir_to_node(current, dirs[rand() % dirs.size()]);
+
+		if (!visited[next_node])
+		{
+			graph.add_edge(current, next_node);
+			--count;
+		}
+
+		current = next_node;
+	}
+}
+
+void Maze::wilsons_algorithm()
+{
+
+}
+
+
+//-------------------------------------------------------------------------
+//-HELPER FUNCTIONS
+//-------------------------------------------------------------------------
 

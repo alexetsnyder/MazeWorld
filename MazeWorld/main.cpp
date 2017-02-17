@@ -169,6 +169,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		maze->sidewinder_algorithm();
 		maze->merge_gg();
 	}
+	if (key == GLFW_KEY_N && action == GLFW_PRESS)
+	{
+		maze->aldous_broder_algorithm();
+		maze->merge_gg();
+	}
 
 	if (key >= 0 && key < 1024)
 	{
